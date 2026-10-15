@@ -1,0 +1,501 @@
+/* =====================================================
+   EchoShow – styles.css
+   Tailwind handles layout. This file handles the look:
+   colors, glass cards, glow, animations, device mockup.
+   ===================================================== */
+
+/* ---------- 1. Colors (change these to re-theme the site) ---------- */
+:root {
+  --violet: #6d28d9;
+  --purple: #a855f7;
+  --lavender: #c4b5fd;
+  --bg: #10091f;
+  --text: #f3eefe;
+  --muted: #b3a6d4;
+  --card: rgba(109, 40, 217, 0.14);
+  --card-border: rgba(196, 181, 253, 0.28);
+  --glow: rgba(168, 85, 247, 0.45);
+  --nav-bg: rgba(16, 9, 31, 0.72);
+  --input-bg: rgba(16, 9, 31, 0.55);
+}
+
+/* Light theme: only the colors change */
+[data-theme="light"] {
+  --bg: #f5f0ff;
+  --text: #24103f;
+  --muted: #5f4b86;
+  --card: rgba(255, 255, 255, 0.65);
+  --card-border: rgba(109, 40, 217, 0.28);
+  --glow: rgba(109, 40, 217, 0.25);
+  --nav-bg: rgba(245, 240, 255, 0.8);
+  --input-bg: rgba(255, 255, 255, 0.8);
+}
+
+/* ---------- 2. Page basics ---------- */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Sora", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg), #1d0f3a, #2a1055, var(--bg));
+  background-size: 300% 300%;
+  animation: gradientShift 22s ease infinite;
+  overflow-x: hidden; /* prevents sideways scrolling */
+}
+
+[data-theme="light"] body {
+  background: linear-gradient(135deg, #f5f0ff, #e9ddff, #f8f3ff, #efe4ff);
+  background-size: 300% 300%;
+}
+
+.text-muted { color: var(--muted); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Keyboard focus ring (important for accessibility) */
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--lavender);
+  outline-offset: 3px;
+}
+
+/* ---------- 3. Background effects ---------- */
+#particles {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+
+.orb-wrap {
+  position: fixed; inset: 0; overflow: hidden;
+  z-index: 0; pointer-events: none;
+}
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(70px); opacity: 0.45;
+  background: radial-gradient(circle, var(--purple), transparent 70%);
+  animation: floatOrb 16s ease-in-out infinite;
+}
+.orb-1 { width: 340px; height: 340px; top: 6%;  left: -80px; }
+.orb-2 { width: 420px; height: 420px; top: 45%; right: -120px; animation-delay: -5s; }
+.orb-3 { width: 300px; height: 300px; bottom: -60px; left: 30%; animation-delay: -9s; }
+
+header, main, footer { position: relative; z-index: 1; }
+
+/* ---------- 4. Navigation ---------- */
+.nav-bar {
+  background: var(--nav-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--card-border);
+}
+.logo { color: var(--text); letter-spacing: 0.01em; }
+.logo-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--lavender), var(--purple));
+  box-shadow: 0 0 14px var(--purple);
+}
+.nav-link { color: var(--muted); transition: color 0.2s, text-shadow 0.2s; }
+.nav-link:hover { color: var(--text); text-shadow: 0 0 12px var(--purple); }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.icon-btn:hover { transform: translateY(-2px); box-shadow: 0 0 16px var(--glow); }
+.icon-btn.profile { background: linear-gradient(135deg, var(--violet), var(--purple)); color: #fff; }
+
+/* Mobile menu: opens by changing max-height */
+.mobile-menu {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.mobile-menu.open { max-height: 320px; }
+.mobile-link {
+  display: block; padding: 14px 12px; border-radius: 12px; color: var(--text);
+}
+.mobile-link:hover { background: var(--card); }
+
+/* ---------- 5. Glass cards ---------- */
+.glass {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.glass:hover {
+  transform: translateY(-5px);
+  border-color: var(--lavender);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), 0 0 28px var(--glow);
+}
+.card { padding: 1.5rem; }
+.card-title { font-size: 1.05rem; font-weight: 700; color: var(--lavender); }
+[data-theme="light"] .card-title { color: var(--violet); }
+
+.section-title {
+  font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem;
+}
+@media (min-width: 768px) { .section-title { font-size: 2.1rem; } }
+
+.pill {
+  padding: 6px 16px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--card-border);
+  color: var(--lavender);
+}
+[data-theme="light"] .pill { color: var(--violet); }
+
+/* ---------- 6. Buttons ---------- */
+.btn-gradient, .btn-ghost, .btn-small {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 28px; border-radius: 999px;
+  font-weight: 700; cursor: pointer; border: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-gradient {
+  color: #fff;
+  background: linear-gradient(90deg, var(--violet), var(--purple), var(--lavender), var(--purple), var(--violet));
+  background-size: 300% 100%;
+  animation: buttonFlow 6s linear infinite;
+  box-shadow: 0 0 22px var(--glow);
+}
+.btn-ghost {
+  color: var(--text); background: transparent;
+  border: 1.5px solid var(--purple);
+}
+.btn-gradient:hover, .btn-ghost:hover { transform: translateY(-3px); box-shadow: 0 0 30px var(--glow); }
+
+.btn-small {
+  min-height: 44px; padding: 0 20px; color: #fff;
+  background: linear-gradient(135deg, var(--violet), var(--purple));
+}
+.btn-small:hover { box-shadow: 0 0 18px var(--glow); }
+
+.chip-btn {
+  min-height: 36px; padding: 0 14px; border-radius: 999px;
+  font-size: 0.8rem; font-weight: 700; cursor: pointer;
+  color: var(--text); background: var(--card); border: 1px solid var(--card-border);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.chip-btn:hover { box-shadow: 0 0 12px var(--glow); }
+.chip-btn.active { background: linear-gradient(135deg, var(--violet), var(--purple)); color: #fff; }
+
+/* ---------- 7. Hero ---------- */
+.hero-title {
+  background: linear-gradient(100deg, #fff, var(--lavender), var(--purple));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+[data-theme="light"] .hero-title {
+  background: linear-gradient(100deg, var(--violet), var(--purple));
+  -webkit-background-clip: text; background-clip: text;
+}
+
+/* ---------- 8. Device mockup (smart display) ---------- */
+.device { width: min(100%, 360px); }
+.device-large { width: min(100%, 560px); }
+.device-screen {
+  border-radius: 28px; padding: 22px;
+  background: linear-gradient(160deg, #1b0d3a, #2b1160 60%, #3b1a80);
+  border: 6px solid #0a0516;
+  outline: 2px solid var(--purple);
+  box-shadow: 0 0 40px var(--glow), 0 0 90px rgba(109, 40, 217, 0.35), inset 0 0 40px rgba(168, 85, 247, 0.25);
+  color: #f3eefe;
+  min-height: 220px;
+  display: flex; flex-direction: column; justify-content: center; gap: 10px;
+}
+.device-large .device-screen { padding: 28px; min-height: 280px; }
+.device-time { font-size: 2.6rem; font-weight: 800; line-height: 1; text-shadow: 0 0 18px var(--purple); }
+.device-large .device-time { font-size: 2.2rem; }
+.device-date { font-size: 0.9rem; color: var(--lavender); }
+.device-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.device-chip {
+  padding: 6px 12px; border-radius: 999px; font-size: 0.8rem;
+  background: rgba(196, 181, 253, 0.16); border: 1px solid rgba(196, 181, 253, 0.3);
+}
+.device-card {
+  padding: 14px; border-radius: 16px; min-width: 0;
+  background: rgba(196, 181, 253, 0.12); border: 1px solid rgba(196, 181, 253, 0.25);
+}
+.device-bars { display: flex; align-items: flex-end; gap: 6px; height: 40px; margin-top: 6px; }
+.device-bars span {
+  flex: 1; border-radius: 4px 4px 0 0;
+  background: linear-gradient(to top, var(--violet), var(--lavender));
+  animation: bars 1.6s ease-in-out infinite;
+}
+.device-bars span:nth-child(1) { height: 40%; animation-delay: 0s; }
+.device-bars span:nth-child(2) { height: 70%; animation-delay: 0.2s; }
+.device-bars span:nth-child(3) { height: 50%; animation-delay: 0.4s; }
+.device-bars span:nth-child(4) { height: 90%; animation-delay: 0.1s; }
+.device-bars span:nth-child(5) { height: 60%; animation-delay: 0.3s; }
+.device-bars span:nth-child(6) { height: 80%; animation-delay: 0.5s; }
+.device-bars span:nth-child(7) { height: 45%; animation-delay: 0.15s; }
+.device-stand {
+  width: 38%; height: 26px; margin: 0 auto;
+  background: linear-gradient(#1a0f33, #0a0516);
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 10px 30px var(--glow);
+}
+.float-slow { animation: floatY 6s ease-in-out infinite; }
+
+/* ---------- 9. Clock and weather ---------- */
+.clock-time {
+  font-size: clamp(3.2rem, 14vw, 5.5rem); font-weight: 800; line-height: 1;
+  text-shadow: 0 0 24px var(--glow);
+}
+.clock-seconds { font-size: 1.5rem; font-weight: 700; color: var(--purple); padding-bottom: 0.5rem; }
+.weather-icon { font-size: 4rem; filter: drop-shadow(0 0 16px var(--glow)); }
+.mini-stat {
+  display: flex; flex-direction: column; gap: 2px; padding: 10px 6px;
+  border-radius: 14px; background: var(--input-bg); border: 1px solid var(--card-border);
+}
+.forecast-day {
+  padding: 8px 4px; border-radius: 12px;
+  background: var(--input-bg); border: 1px solid var(--card-border);
+}
+
+/* ---------- 10. Calendar ---------- */
+.calendar-head, .calendar-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;
+}
+.calendar-head { font-size: 0.75rem; color: var(--muted); font-weight: 700; }
+.calendar-grid span {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 1 / 1; font-size: 0.8rem; border-radius: 10px;
+}
+.calendar-grid .today {
+  background: linear-gradient(135deg, var(--violet), var(--purple));
+  color: #fff; font-weight: 800; box-shadow: 0 0 14px var(--glow);
+}
+.calendar-grid .has-event { border: 1px solid var(--purple); }
+.event-list li {
+  display: flex; gap: 12px; align-items: center; padding: 8px 0;
+  border-bottom: 1px solid var(--card-border); font-size: 0.9rem;
+}
+.event-list li:last-child { border-bottom: 0; }
+.event-time {
+  font-weight: 800; color: var(--purple); min-width: 48px;
+}
+
+/* ---------- 11. To-do list ---------- */
+.text-input {
+  min-height: 44px; padding: 0 16px; border-radius: 999px;
+  color: var(--text); background: var(--input-bg);
+  border: 1px solid var(--card-border);
+}
+.text-input::placeholder { color: var(--muted); }
+.todo-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
+.todo-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border-radius: 14px;
+  background: var(--input-bg); border: 1px solid var(--card-border);
+}
+.todo-item label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; cursor: pointer; min-height: 32px; }
+.todo-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--purple); flex-shrink: 0; }
+.todo-item span { overflow-wrap: anywhere; }
+.todo-item.done span { text-decoration: line-through; opacity: 0.55; }
+.delete-btn {
+  width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer;
+  color: var(--muted); background: transparent; font-size: 1.1rem;
+}
+.delete-btn:hover { color: #fff; background: rgba(244, 63, 94, 0.6); }
+
+/* ---------- 12. Music player ---------- */
+.cover {
+  width: 84px; height: 84px; border-radius: 20px; flex-shrink: 0;
+  display: flex; align-items: flex-end; justify-content: center; padding: 10px;
+  background: linear-gradient(135deg, var(--violet), var(--purple), var(--lavender));
+  box-shadow: 0 0 22px var(--glow);
+}
+.equalizer { display: flex; align-items: flex-end; gap: 4px; height: 26px; }
+.equalizer span {
+  width: 5px; height: 6px; border-radius: 3px; background: #fff;
+}
+.equalizer.playing span { animation: bars 0.9s ease-in-out infinite; }
+.equalizer.playing span:nth-child(2) { animation-delay: 0.2s; }
+.equalizer.playing span:nth-child(3) { animation-delay: 0.4s; }
+.equalizer.playing span:nth-child(4) { animation-delay: 0.1s; }
+.progress { height: 6px; border-radius: 999px; background: var(--input-bg); overflow: hidden; }
+.progress-bar {
+  height: 100%; width: 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--violet), var(--lavender));
+  box-shadow: 0 0 10px var(--purple);
+}
+.round-btn {
+  width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+  color: var(--text); background: var(--card); border: 1px solid var(--card-border);
+  font-size: 1.1rem; transition: transform 0.2s, box-shadow 0.2s;
+}
+.round-btn:hover { transform: scale(1.08); box-shadow: 0 0 16px var(--glow); }
+.round-btn.big {
+  width: 60px; height: 60px; font-size: 1.4rem; color: #fff; border: 0;
+  background: linear-gradient(135deg, var(--violet), var(--purple));
+  box-shadow: 0 0 22px var(--glow);
+}
+
+/* ---------- 13. Smart home controls ---------- */
+.control-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.control-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; border-radius: 14px; font-size: 1.4rem;
+  background: var(--input-bg); border: 1px solid var(--card-border);
+  filter: grayscale(1) opacity(0.7);
+  transition: filter 0.3s, box-shadow 0.3s;
+}
+.control-icon.on { filter: none; box-shadow: 0 0 22px #fde68a, 0 0 8px var(--purple); }
+.control-icon.fan.on { box-shadow: 0 0 18px var(--glow); }
+.control-icon.fan.on.speed-1 { animation: spin 2.4s linear infinite; }
+.control-icon.fan.on.speed-2 { animation: spin 1.2s linear infinite; }
+.control-icon.fan.on.speed-3 { animation: spin 0.55s linear infinite; }
+
+.switch {
+  position: relative; width: 56px; height: 32px; flex-shrink: 0;
+  border-radius: 999px; border: 1px solid var(--card-border); cursor: pointer;
+  background: var(--input-bg); transition: background 0.25s, box-shadow 0.25s;
+}
+.switch span {
+  position: absolute; top: 3px; left: 3px; width: 24px; height: 24px;
+  border-radius: 50%; background: var(--lavender);
+  transition: transform 0.25s;
+}
+.switch.on {
+  background: linear-gradient(90deg, var(--violet), var(--purple));
+  box-shadow: 0 0 16px var(--glow);
+}
+.switch.on span { transform: translateX(24px); background: #fff; }
+
+.range { width: 100%; accent-color: var(--purple); height: 28px; }
+
+/* ---------- 14. Stats ---------- */
+.ring {
+  --percent: 0;
+  width: 92px; height: 92px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(closest-side, var(--bg) 74%, transparent 76%),
+    conic-gradient(var(--purple) calc(var(--percent) * 1%), var(--input-bg) 0);
+  font-weight: 800; box-shadow: 0 0 20px var(--glow);
+}
+[data-theme="light"] .ring {
+  background:
+    radial-gradient(closest-side, #fff 74%, transparent 76%),
+    conic-gradient(var(--purple) calc(var(--percent) * 1%), var(--input-bg) 0);
+}
+.bar { height: 8px; margin-top: 6px; border-radius: 999px; background: var(--input-bg); overflow: hidden; }
+.bar span {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--violet), var(--lavender));
+}
+
+/* ---------- 15. Notifications ---------- */
+.badge {
+  display: inline-block; min-width: 24px; padding: 1px 8px; margin-left: 6px;
+  border-radius: 999px; font-size: 0.75rem; text-align: center; color: #fff;
+  background: var(--purple); box-shadow: 0 0 10px var(--glow);
+}
+.notification-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+.notification-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: 14px;
+  background: var(--input-bg); border: 1px solid var(--card-border);
+  font-size: 0.9rem;
+}
+.notification-item .note-text { flex: 1; min-width: 0; }
+.notification-item small { display: block; color: var(--muted); margin-top: 2px; }
+
+/* ---------- 16. Gallery ---------- */
+.gallery-item {
+  position: relative; margin: 0; overflow: hidden;
+  aspect-ratio: 4 / 3; border-radius: 24px;
+  border: 1px solid var(--card-border);
+  background: linear-gradient(135deg, var(--violet), #2b1160, var(--purple)); /* shows if image fails */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+.gallery-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+.gallery-item::after { /* purple overlay */
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(109, 40, 217, 0.75), rgba(168, 85, 247, 0.12) 60%);
+  opacity: 0.7; transition: opacity 0.4s; pointer-events: none;
+}
+.gallery-item:hover img { transform: scale(1.1); }
+.gallery-item:hover::after { opacity: 1; }
+.gallery-item figcaption {
+  position: absolute; left: 16px; right: 16px; bottom: 14px; z-index: 2;
+  font-weight: 700; color: #fff; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.gallery-item.img-failed img { display: none; }
+.gallery-item.img-failed::before {
+  content: "Image unavailable"; position: absolute; top: 14px; left: 16px; z-index: 2;
+  font-size: 0.75rem; color: var(--lavender);
+}
+
+/* ---------- 17. Footer, toast, helpers ---------- */
+.footer { background: var(--nav-bg); border-top: 1px solid var(--card-border); backdrop-filter: blur(10px); }
+
+.toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 100;
+  transform: translate(-50%, 30px); opacity: 0; pointer-events: none;
+  max-width: calc(100% - 32px); padding: 12px 20px; border-radius: 999px;
+  color: #fff; font-weight: 600; font-size: 0.9rem; text-align: center;
+  background: linear-gradient(90deg, var(--violet), var(--purple));
+  box-shadow: 0 0 24px var(--glow);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.widget-hidden { display: none !important; }
+
+.option-row {
+  display: flex; align-items: center; gap: 10px; min-height: 44px;
+  padding: 8px 14px; border-radius: 14px; cursor: pointer;
+  background: var(--input-bg); border: 1px solid var(--card-border);
+}
+.option-row input { width: 20px; height: 20px; accent-color: var(--purple); }
+
+/* ---------- 18. Scroll reveal ---------- */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+/* The glass hover lift must still work after reveal */
+.glass.reveal.visible:hover { transform: translateY(-5px); }
+
+/* ---------- 19. Animations ---------- */
+@keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes buttonFlow { 0% { background-position: 0% 0; } 100% { background-position: 300% 0; } }
+@keyframes floatY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes floatOrb { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -50px); } }
+@keyframes bars { 0%, 100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Equalizer bars need a fixed base so scaleY looks right */
+.equalizer span { transform-origin: bottom; }
+.equalizer.playing span { height: 26px; }
+.device-bars span { transform-origin: bottom; }
+
+/* ---------- 20. Reduced motion (accessibility) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  #particles { display: none; }
+}
+
+/* ---------- 21. Small-screen tweaks ---------- */
+@media (max-width: 480px) {
+  .card { padding: 1.15rem; }
+  .device-time { font-size: 2.2rem; }
+  .toast { bottom: 16px; }
+}
